@@ -3,32 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dippobie Official</title>
+    <title>Dippobie Official | Powered by Filiru Paints</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Wavesurfer.js for advanced audio waveforms -->
     <script src="https://unpkg.com/wavesurfer.js@7"></script>
-    <!-- GSAP for smooth animations -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>
 <body>
 
-    <header>
-        <div class="logo">DIPPOBIE</div>
-    </header>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">DIPPOBIE</div>
+            <ul class="nav-links">
+                <li><a href="#hero">Home</a></li>
+                <li><a href="#music-container">Music</a></li>
+                <li><a href="https://dizzar-mw.github.io/FiliruPaints/" target="_blank" class="sponsor-badge">Sponsor</a></li>
+            </ul>
+        </div>
+    </nav>
 
-    <main>
-        <!-- The visual identity hero section -->
+    <main style="margin-top: 70px;">
         <section id="hero">
-            <h1>BIG DREAMS. LOUD MUSIC.</h1>
+            <h1>BIG DREAMS.<br>LOUD MUSIC.</h1>
             <p>The official home of Dippobie.</p>
         </section>
 
-        <!-- This is where the JavaScript will automatically inject the tracks -->
+        <section class="sponsor-ad-section">
+            <div class="ad-card">
+                <span class="ad-tag">Official Sponsor</span>
+                <h2>Bring Color To Your World</h2>
+                <p>Premium residential, commercial, and creative painting services by <strong>Filiru Paints</strong>.</p>
+                <a href="https://dizzar-mw.github.io/FiliruPaints/" target="_blank" class="ad-btn">Visit Filiru Paints</a>
+            </div>
+        </section>
+
         <section id="music-container">
             <h2>LATEST RELEASES</h2>
             <div id="tracks-list"></div>
         </section>
+
+        <div id="download-modal" class="modal-overlay">
+            <div class="modal-card">
+                <button id="close-modal" class="close-btn">&times;</button>
+                <img id="modal-cover" src="" alt="Cover Art">
+                <h3 id="modal-title">Song Title</h3>
+                <p id="modal-artist">Dippobie</p>
+                
+                <div class="download-status">
+                    <p>Preparing your download...</p>
+                    <div class="progress-container">
+                        <div id="modal-progress-bar" class="progress-bar"></div>
+                    </div>
+                </div>
+                
+                <p class="modal-footer">Proudly sponsored by <a href="https://dizzar-mw.github.io/FiliruPaints/" target="_blank" style="color: #ff3e3e; text-decoration: none; font-weight: bold;">Filiru Paints</a>.</p>
+            </div>
+        </div>
     </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Dippobie Music. All Rights Reserved.</p>
+            <p class="powered-by">Website crafted & sponsored by <a href="https://dizzar-mw.github.io/FiliruPaints/" target="_blank">Filiru Paints</a></p>
+        </div>
+    </footer>
 
     <script src="app.js"></script>
 </body>
