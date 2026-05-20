@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crew Audio Portal & Player</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            margin: 0;
+            padding: 20px;
+        }
+        header {
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #282828;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        .track-card {
+            display: flex;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            align-items: center;
+        }
+        
+        /* --- CLASSIC DVD SPINNING DISC STYLING --- */
+        .disc-container {
+            position: relative;
+            width: 110px;
+            height: 110px;
+            margin-right: 25px;
+            flex-shrink: 0;
+        }
+        .track-icon {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%; /* Perfect circle */
+            object-fit: cover;
+            background-color: #333;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+            border: 2px solid #282828;
+            transition: transform 0.5s ease;
+            
+            /* Grooves effect to look like media discs */
+            background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 50%), #333;
+        }
+        /* The classic spindle hole in the center of a DVD/CD */
+        .disc-container::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 18px;
+            height: 18px;
+            background-color: #1e1e1e; /* Matches card background */
+            border: 3px solid #121212;
+            border-radius: 50%;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.8);
+            z-index: 2;
+        }
+
+        /* Continuous Spin Animation Loop */
+        .spinning {
+            animation: spinDisc 3.5s linear infinite;
+        }
+
+        @keyframes spinDisc {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        /* ----------------------------------------- */
+
+        .track-info {
+            flex-grow: 1;
+        }
+        .track-title {
+            font-size: 1.4rem;
+            margin: 0 0 5px 0;
+            color: #1db954;
+        }
+        .track-desc {
+            font-size: 0.95rem;
+            color: #b3b3b3;
+            margin: 0 0 15px 0;
+            white-space: pre-line;
+        }
+        audio {
+            width: 100%;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>CREW RELEASES</h1>
+        <p>Classic Disc Live Stream</p>
+    </header>
+
+    <div class="container" id="music-container">
+        <p style="text-align: center; color: #888;">Spining up the deck...</p>
+    </div>
+
+    <script>
+        // ADD YOUR TRACK FILENAMES HERE
+        const trackList = [
+            "ghetto-vibes",
+            "street-anthem",
+            "summer-mix-2026"
+        ];
+
+        const container = document.getElementById('music-container');
+
+        async function loadTracks() {
+            container.innerHTML = ''; 
+
+            if (trackList.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#888;">No tracks uploaded yet.</p>';
+                return;
+            }
+
+            for (const trackId of trackList) {
+                const audioUrl = `music/${trackId}.mp3`;
+                const imageUrl = `music/${trackId}.jpg`;
+                const textUrl = `music/${trackId}.txt`;
+
+                const card = document.createElement('div');
+                card.className = 'track-card';
+                
+                card.innerHTML = `
+                    <div class="disc-container">
+                        <img src="${imageUrl}" class="track-icon" id="disc-${trackId}" alt="Cover Art" onerror="this.src='https://placehold.co/110x110?text=No+Art'">
+                    </div>
+                    <div class="track-info">
+                        <h3 class="track-title" id="title-${trackId}">Loading Title...</h3>
+                        <p class="track-desc" id="desc-${trackId}">Loading details...</p>
+                        <audio controls id="audio-${trackId}" src="${audioUrl}"></audio>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+
+                const audioElement = document.getElementById(`audio-${trackId}`);
+                const discImage = document.getElementById(`disc-${trackId}`);
+
+                // --- AUDIO EVENT LISTENERS FOR SPIN EFFECT ---
+                
+                // When this song starts playing, start the spin
+                audioElement.addEventListener('play', () => {
+                    // Optional: Pause all other audios playing simultaneously
+                    stopOtherTracks(`audio-${trackId}`);
+                    discImage.classList.add('spinning');
+                });
+
+                // When paused, freeze the rotation right where it is
+                audioElement.addEventListener('pause', () => {
+                    discImage.classList.remove('spinning');
+                });
+
+                // Stop spinning when track runs completely out
+                audioElement.addEventListener('ended', () => {
+                    discImage.classList.remove('spinning');
+                });
+
+
+                // Fetch the text details
+                try {
+                    const response = await fetch(textUrl);
+                    if (!response.ok) throw new Error('No description text');
+                    const textContent = await response.text();
+                    
+                    const lines = textContent.split('\n');
+                    const title = lines[0] || trackId.replace(/-/g, ' ');
+                    const description = lines.slice(1).join('\n').trim() || "No description loaded.";
+
+                    document.getElementById(`title-${trackId}`).textContent = title;
+                    document.getElementById(`desc-${trackId}`).textContent = description;
+                } catch (error) {
+                    document.getElementById(`title-${trackId}`).textContent = trackId.replace(/-/g, ' ');
+                    document.getElementById(`desc-${trackId}`).textContent = "Audio release details.";
+                }
+            }
+        }
+
+        // Helper function to make sure two tracks don't blast at the same time
+        function stopOtherTracks(currentAudioId) {
+            const allAudios = document.querySelectorAll('audio');
+            allAudios.forEach(audio => {
+                if (audio.id !== currentAudioId) {
+                    audio.pause();
+                }
+            });
+        }
+
+        loadTracks();
+    </script>
+</body>
+</html>
