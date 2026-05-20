@@ -1,1 +1,125 @@
 
+/* Reset and Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+body {
+    background-color: #0a0a0a; /* Deep dark background */
+    color: #ffffff;
+    overflow-x: hidden;
+}
+
+/* Header & Logo */
+header {
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    border-bottom: 1px solid #333;
+}
+
+.logo {
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+}
+
+/* Hero Section */
+#hero {
+    height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+}
+
+#hero h1 {
+    font-size: 4rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    color: #fff;
+}
+
+#hero p {
+    font-size: 1.2rem;
+    color: #888;
+}
+
+/* Music Container */
+#music-container {
+    padding: 4rem 2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+#music-container h2 {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    border-left: 4px solid #fff; /* Crisp white accent */
+    padding-left: 10px;
+}
+
+/* Track Cards (This is what the JS will create) */
+.track-card {
+    background: #151515;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.track-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+}
+
+.track-info {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.track-cover {
+    width: 80px;
+    height: 80px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.track-details h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.2rem;
+}
+
+.track-details p {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* Download Button Styling */
+.download-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #fff;
+    color: #000;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 4px;
+    text-align: center;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+    background-color: #ccc;
+}
